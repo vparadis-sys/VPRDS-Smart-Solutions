@@ -187,15 +187,20 @@ tr:hover td{background:rgba(255,255,255,.018)}
 
 <script>
 // ============================================================
-// AUTH
+// AUTH — comparaison directe (compatible tous navigateurs)
 // ============================================================
-const PWD_HASH='9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08';
-async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+const PWD='test'; // ← changer ici pour modifier le mot de passe
 
-async function doAuth(){
-  const h=await sha256(document.getElementById('pwd').value);
-  if(h===PWD_HASH){sessionStorage.setItem('auth','1');showApp()}
-  else{document.getElementById('auth-err').textContent='Mot de passe incorrect';document.getElementById('pwd').value=''}
+function doAuth(){
+  const val=document.getElementById('pwd').value;
+  if(val===PWD){
+    sessionStorage.setItem('auth','1');
+    showApp();
+  } else {
+    document.getElementById('auth-err').textContent='Mot de passe incorrect';
+    document.getElementById('pwd').value='';
+    document.getElementById('pwd').focus();
+  }
 }
 document.getElementById('pwd').onkeydown=e=>{if(e.key==='Enter')doAuth()};
 function doLogout(){sessionStorage.removeItem('auth');location.reload()}
