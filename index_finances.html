@@ -339,14 +339,14 @@ function goTab(id){
 // ============================================================
 // UTILS
 // ============================================================
-const euro=(v,d=0)=>v==null||isNaN(v)?'—':new Intl.NumberFormat('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v)+' €';
-const kEuro=v=>v==null||isNaN(v)?'—':new Intl.NumberFormat('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:0}).format(v)+' k€';
-const pct=(r,b)=>b&&b!==0?Math.round(r/b*100):null;
+function euro(v,d){d=d||0;return v==null||isNaN(v)?'—':new Intl.NumberFormat('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v)+' €';}
+function kEuro(v){return v==null||isNaN(v)?'—':new Intl.NumberFormat('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:0}).format(v)+' k€';}
+function pct(r,b){return b&&b!==0?Math.round(r/b*100):null;}
 function pillCls(p){if(p===null)return'dim';if(p<=100)return'g';if(p<=130)return'o';return'r'}
 function pillLbl(p){if(p===null)return'—';if(p<=100)return'✓ OK';if(p<=130)return'⚡ Attention';return'⛔ Dépass.'}
-function deltaColor(v,isCharge=false){const ok=isCharge?v<=0:v>=0;return ok?'c-green':'c-orange'}
+function deltaColor(v,isCharge){if(isCharge===undefined)isCharge=false;var ok=isCharge?v<=0:v>=0;return ok?'c-green':'c-orange'}
 function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id]}}
-function mkChart(id,cfg){destroyChart(id);const c=document.getElementById(id);if(!c)return;charts[id]=new Chart(c.getContext('2d'),cfg)}
+function mkChart(id,cfg){destroyChart(id);var c=document.getElementById(id);if(!c)return;charts[id]=new Chart(c.getContext('2d'),cfg)}
 
 function kpiCard(label,val,sub,delta,deltaClass){
   return`<div class="card"><div class="card-label">${label}</div><div class="kpi">${val}</div>${sub?`<div class="kpi-sub">${sub}</div>`:''}${delta!=null?`<div class="kpi-delta ${deltaClass||'c-dim'}">${delta}</div>`:''}</div>`;
